@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Quiz Game</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #f0f8ff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .quiz-container {
+      background: #fff;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+      width: 400px;
+      text-align: center;
+    }
+
+    .quiz-container h2 {
+      margin-bottom: 20px;
+    }
+
+    .options button {
+      display: block;
+      width: 100%;
+      margin: 10px 0;
+      padding: 10px;
+      font-size: 16px;
+      border: none;
+      border-radius: 8px;
+      background-color: #007bff;
+      color: white;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    .options button:hover {
+      background-color: #0056b3;
+    }
+
+    .result {
+      margin-top: 20px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <div class="quiz-container">
+    <h2 id="question">Question Text</h2>
+    <div class="options" id="options"></div>
+    <div class="result" id="result"></div>
+  </div>
+
+  <script>
+    const quizData = [
+      {
+        question: 'What is the capital of France?',
+        options: ['Berlin', 'London', 'Paris', 'Madrid'],
+        answer: 'Paris'
+      },
+      {
+        question: 'Which language runs in a web browser?',
+        options: ['Java', 'C', 'Python', 'JavaScript'],
+        answer: 'JavaScript'
+      },
+      {
+        question: 'Who wrote "Romeo and Juliet"?',
+        options: ['William Wordsworth', 'William Shakespeare', 'John Keats', 'Jane Austen'],
+        answer: 'William Shakespeare'
+      }
+    ];
+
+    let currentQuestion = 0;
+    let score = 0;
+
+    function loadQuestion() {
+      const questionEl = document.getElementById('question');
+      const optionsEl = document.getElementById('options');
+      const resultEl = document.getElementById('result');
+      resultEl.innerHTML = '';
+      
+      if (currentQuestion >= quizData.length) {
+        questionEl.innerText = 'Quiz Completed!';
+        optionsEl.innerHTML = '';
+        resultEl.innerHTML = `Your score: ${score} / ${quizData.length}`;
+        return;
+      }
+
+      const current = quizData[currentQuestion];
+      questionEl.innerText = current.question;
+
+      optionsEl.innerHTML = '';
+      current.options.forEach(option => {
+        const btn = document.createElement('button');
+        btn.innerText = option;
+        btn.onclick = () => checkAnswer(option);
+        optionsEl.appendChild(btn);
+      });
+    }
+
+    function checkAnswer(selected) {
+      const correct = quizData[currentQuestion].answer;
+      if (selected === correct) {
+        score++;
+        document.getElementById('result').innerHTML = '<p style="color:green;">Correct!</p>';
+      } else {
+        document.getElementById('result').innerHTML = `<p style="color:red;">Wrong! Correct: ${correct}</p>`;
+      }
+      currentQuestion++;
+      setTimeout(loadQuestion, 1500);
+    }
+
+    loadQuestion();
+  </script>
+</body>
+</html>
